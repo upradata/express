@@ -8,7 +8,7 @@ import { isDevelopment } from './common';
 
 const readdir = promisify(fs.readdir);
 
-export type Filter = (options: { dirname: string, basename: string, filepath: string; }) => boolean;
+export type Filter = (options: { dirname: string; basename: string; filepath: string; }) => boolean;
 
 export interface FoundFile {
     dirname: string;
@@ -65,9 +65,9 @@ export const findFile = async (options: FindFileOptions): Promise<FoundFileWithE
                 error: new Error(`${selectStr} matched few files in "${dir}": files: [ ${files.join(',')} ]`)
             } as FoundFileWithError;
 
-        } else {
-            if (isDevelopment) {
-                console.warn(s.magenta.args.yellow.stripIndent.full.$`
+        }
+        if (isDevelopment) {
+            console.warn(s.magenta.args.yellow.stripIndent.full.$`
                     ${selectStr} matched few files in "${dir}": files =>
 
                     [
@@ -75,9 +75,9 @@ export const findFile = async (options: FindFileOptions): Promise<FoundFileWithE
                     ].
 
                     First one will be returned: "${files[ 0 ]}"`
-                );
-            }
+            );
         }
+
     }
 
     return files[ 0 ];
