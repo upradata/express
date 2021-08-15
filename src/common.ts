@@ -1,7 +1,9 @@
 import cors from 'cors';
 import { regexToString } from '@upradata/util';
 
+
 export const isProduction = process.env.NODE_ENV === 'production' ? true : false;
+export const isDevelopment = !isProduction;
 
 if (isProduction)
     require('@google-cloud/debug-agent').start({ allowExpressions: true });
@@ -16,7 +18,12 @@ const level = `${set(word)}|${set(word)}${set(word, '\\-')}{0,1}${set(word)}`;
 // https://stackoverflow.com/questions/106179/regular-expression-to-match-dns-hostname-or-ip-address
 export const anySubdomainRegex = (domainRegex: string | RegExp) => new RegExp(`^(https?://)?(${level}\\.)*${regexToString(domainRegex)}$`);
 
-export const origin = (domain: string | RegExp) => isProduction ? new RegExp(`${regexToString(/https?:\/\/(\w*\.)*/)}${regexToString(domain)}`) : /.*/;
+export const origin = (domain: string | RegExp) => {
+    if (isProduction)
+        return new RegExp(`${regexToString(/https?:\/\/(\w*\.)*/)}${regexToString(domain)}`);
+
+    return /.*/;
+};
 
 
 export const corsOptions = (domain: string | RegExp): cors.CorsOptions | cors.CorsOptionsDelegate => ({

@@ -1,40 +1,28 @@
 {
+    // For IDE
+    "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "downlevelIteration": true,
-        // "allowJs": true,
-        "declaration": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": [
-            "ESNext",
-            "DOM",
-            "DOM.Iterable"
-        ],
-        "module": "CommonJS",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "target": "ESNext",
-        "traceResolution": false,
-        "outDir": "lib",
-        "baseUrl": "./",
-        "paths": {
-            "@root/*": [
-                "./*"
-            ],
-            "*": [
-                "./node_modules",
-                "./typings/*"
-            ] // https://github.com/microsoft/TypeScript/issues/13581#issuecomment-273923793
-        }
+        "outDir": "lib-esm",
+        "module": "ESNext",
     },
     "include": [
         "src"
     ],
     "exclude": [
         "node_modules",
-        "src/**/*.spec.ts",
-        "src/**/bak/**"
-    ]
+        "src/**/*.example.ts",
+        "src/**/*.spec.ts"
+    ],
+    "ts-node": {
+        // It is faster to skip typechecking.
+        // Remove if you want ts-node to do typechecking.
+        "transpileOnly": true,
+        "files": true,
+        "compilerOptions": {
+            // compilerOptions specified here will override those declared below,
+            // but *only* in ts-node.  Useful if you want ts-node and tsc to use
+            // different options with a single tsconfig.json.
+            "module": "CommonJS"
+        }
+    }
 }

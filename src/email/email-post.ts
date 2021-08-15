@@ -1,28 +1,29 @@
 import cors from 'cors';
 import express from 'express';
-import mailgunJs from 'mailgun-js';
-import { createSendMail, EmailOptions } from './send.mailgun';
-import { EmailError, EmailCodifiedError } from './email-error';
-import { corsOptions } from '../common';
 import { CodifiedError } from '@upradata/util';
+import { corsOptions } from '../common';
+import { EmailCodifiedError, EmailError } from './email-error';
+import { createSendMail, SendMailOptions } from './send';
+import { EmailOptions } from './types';
+
 
 interface SendMailPostMethodOptions {
     app: express.Express;
     domain: string | RegExp;
-    mailgunOptions: mailgunJs.ConstructorParams;
+    emailServiceOptions: SendMailOptions;
     url?: string;
 }
 
 export const createSendMailPostMethod = (options: SendMailPostMethodOptions) => {
-    const { app, domain, mailgunOptions, url = '/sendmail' } = options;
+    const { app, domain, emailServiceOptions, url = '/sendmail' } = options;
 
-    const sendMail = createSendMail(mailgunOptions);
+    const sendMail = createSendMail(emailServiceOptions);
 
     app.options(url, cors(corsOptions(domain))); // enable pre-flight request
     app.post(url, (req, res, next) => {
-        const mailData: EmailOptions = req.body;
+        const emailOptions: EmailOptions = req.body;
 
-        return sendMail(mailData).then(() => {
+        return sendMail(emailOptions).then(() => {
             res.status(200).send({ message: 'Email sent' });
         }).catch((err: EmailError | Error) => {
 

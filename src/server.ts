@@ -1,17 +1,20 @@
-import express from 'express';
-import * as core from 'express-serve-static-core';
-import * as qs from 'qs';
 import bodyParser from 'body-parser';
-import serveStatic from 'serve-static';
 import cors from 'cors';
+import express from 'express';
+// Enable to use async/await and generators (using npm "co" package underneath) in the router's handlers
+import 'express-async-errors';
+import * as core from 'express-serve-static-core';
 import mailgunJs from 'mailgun-js';
+import * as qs from 'qs';
+import serveStatic from 'serve-static';
+import { AnyFunction, AssignOptions, assignRecursive, PartialRecursive } from '@upradata/util';
+import { corsOptions, isProduction } from './common';
+import { EmailOptions, SendMail, SendMailOptions } from './email';
 import { logRequest } from './middleware/common.middleware';
-import { SendMail, EmailOptions } from './email';
 import { errorHandler } from './middleware/error.middleware';
-import { corsOptions } from './common';
 import { makeFirewallMiddleware } from './middleware/firewall.middleware';
-import { AnyFunction, assignRecursive, AssignOptions, PartialRecursive } from '@upradata/util';
-import { SendFileOptions, sendFile } from './send-file';
+import { sendFile, SendFileOptions } from './send-file';
+
 
 export interface StaticOptions {
     path: string;
@@ -22,14 +25,22 @@ export interface StaticOptions {
 export class ExpressServerOptions {
     domain: string | RegExp;
     allowedDomains: (string | RegExp)[] = [ /^localhost$/ ];
+    enableLogRequest: boolean = true;
     static?: StaticOptions = {
         path: 'static',
         url: '/static',
-        options: { fallthrough: false, etag: true /* , index: 'index.html'  */ }
+        options: { fallthrough: false, etag: true, index: 'index.html' }
     };
+    bodyParser?: {
+        urlencoded?: bodyParser.OptionsUrlencoded;
+        json?: bodyParser.OptionsJson;
+    } = {
+            urlencoded: { extended: true },
+            json: undefined
+        };
     services: {
         sendmail?: {
-            mailgunOptions: mailgunJs.ConstructorParams;
+            options: SendMailOptions;
             url?: string;
         };
     } = {};
@@ -54,22 +65,28 @@ export class ExpressServer {
             }
         }));
 
+        if (!isProduction)
+            this.options.domain = /.*/;
+
         this.app = express();
+        this.create();
     }
 
     create() {
-        const { domain, allowedDomains, static: staticOpts, services } = this.options;
+        const { enableLogRequest, domain, allowedDomains, static: staticOpts, services, bodyParser: bParser } = this.options;
         const { app } = this;
 
         app.use(cors(corsOptions(domain))); // all routes
 
         // support parsing of application/json type post data
-        app.use(bodyParser.json());
+        app.use(bodyParser.json(bParser.json));
 
         // support parsing of application/x-www-form-urlencoded for form data post request
-        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(bodyParser.urlencoded(bParser.urlencoded));
 
-        app.use(logRequest);
+        if (enableLogRequest)
+            app.use(logRequest);
+
         app.use(makeFirewallMiddleware(allowedDomains));
 
         if (staticOpts)
@@ -77,11 +94,11 @@ export class ExpressServer {
 
         if (services.sendmail) {
             const { createSendMailPostMethod } = require('./email/email-post') as typeof import('./email/email-post');
-            this.sendMail = createSendMailPostMethod({ app, domain, ...services.sendmail });
+            this.sendMail = createSendMailPostMethod({ app, domain, emailServiceOptions: services.sendmail.options, url: services.sendmail.url });
         }
 
-        return app;
-    };
+        return this;
+    }
 
 
     startListen(options: { port?: number; errorMiddleware?: boolean; } = {}) {
@@ -103,7 +120,7 @@ export class ExpressServer {
             console.log('Press Ctrl+C to quit.');
 
         }) as AnyFunction);
-    };
+    }
 
     addCors(url: core.PathParams) {
         this.app.options(url, cors(corsOptions(this.options.domain))); // enable pre-flight request
@@ -143,7 +160,7 @@ export class ExpressServer {
         if (this.sendMail)
             this.sendMail(emailOptions);
         else {
-            console.warn(`Sendmail service has not been enabled during ExpressServer construction in the options`);
+            console.warn('Sendmail service has not been enabled during ExpressServer construction in the options');
         }
     }
 }

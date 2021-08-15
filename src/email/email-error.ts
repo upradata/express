@@ -3,9 +3,11 @@ import { CodifiedError } from '@upradata/util';
 
 
 export enum EmailErrors {
-    MISSING_PARAMETER = 'upradata-error/missing parameter',
-    WRONG_FORMAT = 'upradata-error/wrong format',
-    MAILGUN = 'upradata-error/mailgun error'
+    MISSING_PARAMETER = 'upradata-error/missing-parameter',
+    WRONG_FORMAT = 'upradata-error/wrong-format',
+    SENDMAIL = 'upradata-error/sendmail-error',
+    MAILGUN = 'upradata-error/mailgun-error',
+    SENDGRID = 'upradata-error/sendgrid-error'
 }
 
 

@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response, RequestHandler } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { stringToRegex } from '@upradata/util';
+
 
 export function makeFirewallMiddleware(allowedDomains: (string | RegExp)[]): RequestHandler {
     return function firewall(req: Request, res: Response, next: NextFunction) {
