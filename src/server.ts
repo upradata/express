@@ -4,7 +4,6 @@ import express from 'express';
 // Enable to use async/await and generators (using npm "co" package underneath) in the router's handlers
 import 'express-async-errors';
 import * as core from 'express-serve-static-core';
-import mailgunJs from 'mailgun-js';
 import * as qs from 'qs';
 import serveStatic from 'serve-static';
 import { AnyFunction, AssignOptions, assignRecursive, PartialRecursive } from '@upradata/util';

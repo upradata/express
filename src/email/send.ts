@@ -1,14 +1,13 @@
-import mailgunJs from 'mailgun-js';
 import { isDefined } from '@upradata/util';
 import { checkEmailArgs } from './common';
 import { EmailCodifiedError, EmailErrors } from './email-error';
-import { mailgun } from './send.mailgun';
+import { mailgun, MailgunOpts } from './send.mailgun';
 import { sendgrid, SendgridOptions } from './send.sendgrid';
 import { EmailOptions, SendMail } from './types';
 
 
 export interface SendMailOptions {
-    mailgun?: mailgunJs.ConstructorParams;
+    mailgun?: MailgunOpts;
     sendgrid?: SendgridOptions;
 }
 
