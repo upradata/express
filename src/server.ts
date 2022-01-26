@@ -7,7 +7,7 @@ import * as core from 'express-serve-static-core';
 import * as qs from 'qs';
 import serveStatic from 'serve-static';
 import { AnyFunction, AssignOptions, assignRecursive, PartialRecursive } from '@upradata/util';
-import { corsOptions, isProduction } from './common';
+import { corsOptions, isDevelopment, isProduction } from './common';
 import { EmailOptions, SendMail, SendMailOptions } from './email';
 import { logRequest } from './middleware/common.middleware';
 import { errorHandler } from './middleware/error.middleware';
@@ -24,7 +24,7 @@ export interface StaticOptions {
 export class ExpressServerOptions {
     domain: string | RegExp;
     allowedDomains: (string | RegExp)[] = [ /^localhost$/ ];
-    enableLogRequest: boolean = true;
+    enableLogRequest: boolean = isDevelopment;
     static?: StaticOptions = {
         path: 'static',
         url: '/static',

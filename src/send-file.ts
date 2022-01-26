@@ -2,6 +2,10 @@
 import { NextFunction, Response } from 'express';
 // import * as core from 'express-serve-static-core';
 import { ObjectOf, TT } from '@upradata/util';
+import { disableTTYStylesIfNotSupported, green } from '@upradata/node-util/';
+import { isDevelopment } from '.';
+
+disableTTYStylesIfNotSupported();
 
 
 export class SendFileOptions {
@@ -20,7 +24,7 @@ export class SendFileOptions {
         'x-timestamp': Date.now(),
         'x-sent': true
     };
-    // Option for serving dotfiles.Possible values are “allow', “deny', “ignore'.“ignore'
+    // Option for serving dotfiles. Possible values are “allow', “deny', “ignore'.“ignore'
     dotfile?: 'allow' | 'deny' | 'ignore' = 'ignore';
     // Enable or disable accepting ranged requests
     acceptRanges?: boolean = true;
@@ -56,7 +60,9 @@ export const sendFile = (filepath: string, options: SendFileOptions) => {
     res.sendFile(filepath, opts, err => {
         if (err)
             next(err);
-        else
-            console.log('File sent:', filepath);
+        else {
+            if (isDevelopment)
+                console.log(green`✔ file sent:`, `"${filepath}"`);
+        }
     });
 };

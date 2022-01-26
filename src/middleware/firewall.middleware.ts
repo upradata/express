@@ -1,6 +1,8 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { stringToRegex } from '@upradata/util';
+import { disableTTYStylesIfNotSupported, styles as s } from '@upradata/node-util';
 
+disableTTYStylesIfNotSupported();
 
 export function makeFirewallMiddleware(allowedDomains: (string | RegExp)[]): RequestHandler {
     return function firewall(req: Request, res: Response, next: NextFunction) {
@@ -9,7 +11,7 @@ export function makeFirewallMiddleware(allowedDomains: (string | RegExp)[]): Req
 
         if (!foundDomain) {
             res.status(403).send('Sorry, you are not allowed to access the server!');
-            console.warn(`Forbidden request: ${req.protocol} => ${req.hostname}${req.originalUrl}`);
+            console.warn(s.bold.args.yellow.full.$`ᐅ Forbidden request: ${req.protocol} => ${req.hostname}${req.originalUrl}`);
             return;
         }
 
