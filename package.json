@@ -9,7 +9,7 @@
 		"url": "milottit@vs-ssh.visualstudio.com:v3/milottit/Util%20Typescript/Util%20Typescript"
 	},
 	"license": "MIT",
-	"version": "1.0.25",
+	"version": "2.0.0",
 	"description": "Set of typescript util tools",
 	"sideEffects": false,
 	"main": "lib",
@@ -56,11 +56,12 @@
 	},
 	"local": {
 		"dependencies": {
-			"@upradata/util": "link:/home/milottit/Libraries/Upra-Data/util@13.0.1",
-			"@upradata/node-util": "link:/home/milottit/Libraries/Upra-Data/node-util@14.0.2"
+			"@upradata/util": "link:/home/milottit/Libraries/Upra-Data/util@15.0.0",
+			"@upradata/node-util": "link:/home/milottit/Libraries/Upra-Data/node-util@16.0.0"
 		},
 		"usedBy": {
-			"@upradata/tilda-tools": "/home/milottit/Libraries/Tilda/tools"
+			"@upradata/tilda-tools": "/home/milottit/Libraries/Tilda/tools",
+			"@upradata/website": "/home/milottit/Projects/upradata-website"
 		}
 	}
 }
