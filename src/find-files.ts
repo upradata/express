@@ -1,14 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
-import { styles as s } from '@upradata/node-util';
-import { ensureArray, ifChained, TT } from '@upradata/util';
+import { disableTTYStylesIfNotSupported, styles as s } from '@upradata/node-util';
+import { ensureArray, ifThen, TT } from '@upradata/util';
 import { isDevelopment } from './common';
+
+
+
+disableTTYStylesIfNotSupported();
 
 
 const readdir = promisify(fs.readdir);
 
-export type Filter = (options: { dirname: string, basename: string, filepath: string; }) => boolean;
+export type Filter = (options: { dirname: string; basename: string; filepath: string; }) => boolean;
 
 export interface FoundFile {
     dirname: string;
@@ -38,7 +42,7 @@ export const findFile = async (options: FindFileOptions): Promise<FoundFileWithE
     const { dir, file, regex, filter, errorOnNotUnique } = options;
     const regexes = ensureArray(regex);
 
-    const selectStr = ifChained()
+    const selectStr = ifThen()
         .next({ if: !!filter, then: '"filter" function' })
         .next({ if: !!file, then: '' })
         .next({ if: !!regex, then: '' })
@@ -65,19 +69,19 @@ export const findFile = async (options: FindFileOptions): Promise<FoundFileWithE
                 error: new Error(`${selectStr} matched few files in "${dir}": files: [ ${files.join(',')} ]`)
             } as FoundFileWithError;
 
-        } else {
-            if (isDevelopment) {
-                console.warn(s.magenta.args.yellow.stripIndent.full.$`
-                    ${selectStr} matched few files in "${dir}": files =>
+        }
+        if (isDevelopment) {
+            console.warn(s.magenta.args.yellow.stripIndent.full.$`
+                    ᐅ ${selectStr} matched few files in "${dir}": files ⟶
 
                     [
                         ${files.join('\n')}
                     ].
 
                     First one will be returned: "${files[ 0 ]}"`
-                );
-            }
+            );
         }
+
     }
 
     return files[ 0 ];

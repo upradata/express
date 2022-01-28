@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { red, yellow } from '@upradata/node-util';
+import { disableTTYStylesIfNotSupported, red, yellow } from '@upradata/node-util';
 
+disableTTYStylesIfNotSupported();
 
 export function logError(err: Error, req: Request, res: Response, next: NextFunction) {
-    console.error(yellow`Error ${err.name}: "${err.message}"`);
-    console.error(red`with stack: ${err.stack}`);
+    console.error(yellow`❌ Error ${err.name}: "${err.message}"`);
+    console.error(red`ᐅ stack: ${err.stack}`);
 
     next(err);
 }
