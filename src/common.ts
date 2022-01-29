@@ -5,8 +5,8 @@ import { regexToString } from '@upradata/util';
 export const isProduction = process.env.NODE_ENV === 'production' ? true : false;
 export const isDevelopment = !isProduction;
 
-if (isProduction)
-    require('@google-cloud/debug-agent').start({ allowExpressions: true });
+/* if (isProduction)
+    require('@google-cloud/debug-agent').start({ allowExpressions: true }); */
 
 
 const set = (...words: string[]) => `[${words.join()}]`;

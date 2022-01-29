@@ -7,7 +7,8 @@ disableTTYStylesIfNotSupported();
 export function makeFirewallMiddleware(allowedDomains: (string | RegExp)[]): RequestHandler {
     return function firewall(req: Request, res: Response, next: NextFunction) {
 
-        const foundDomain = allowedDomains.map(d => stringToRegex(d)).find(domain => domain.test(req.hostname.toLowerCase()));
+        const clientUrl = req.get('referer') || req.get('origin') || req.get('host').replace(/:.*/, '');
+        const foundDomain = allowedDomains.map(d => stringToRegex(d)).find(domain => domain.test(clientUrl));
 
         if (!foundDomain) {
             res.status(403).send('Sorry, you are not allowed to access the server!');
