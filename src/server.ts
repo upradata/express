@@ -56,7 +56,8 @@ export class ExpressServer {
         const defaultOpts = new ExpressServerOptions();
 
         this.options = assignRecursive({}, defaultOpts, options, new AssignOptions({
-            arrayMode: 'replace', transform: (key, value) => {
+            arrayMode: 'replace',
+            transform: (key, value) => {
                 if (key === 'static')
                     return typeof options.static === 'boolean' ? defaultOpts.static : options.static ? value : undefined;
 
@@ -86,7 +87,9 @@ export class ExpressServer {
         if (enableLogRequest)
             app.use(logRequest);
 
-        app.use(makeFirewallMiddleware(allowedDomains));
+        console.log({ allowedDomains });
+        if (allowedDomains.length > 0)
+            app.use(makeFirewallMiddleware(allowedDomains));
 
         if (staticOpts)
             app.use(staticOpts.url, serveStatic(staticOpts.path, staticOpts.options));

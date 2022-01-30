@@ -9,7 +9,7 @@
 		"url": "milottit@vs-ssh.visualstudio.com:v3/milottit/Util%20Typescript/Util%20Typescript"
 	},
 	"license": "MIT",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"description": "Set of typescript util tools",
 	"sideEffects": false,
 	"main": "lib",

@@ -12,7 +12,7 @@ export function makeFirewallMiddleware(allowedDomains: (string | RegExp)[]): Req
 
         if (!foundDomain) {
             res.status(403).send('Sorry, you are not allowed to access the server!');
-            console.warn(s.bold.args.yellow.full.$`ᐅ Forbidden request: ${req.protocol} => ${req.hostname}${req.originalUrl}`);
+            console.warn(s.bold.args.yellow.full.$`ᐅ Accesss denied for "${clientUrl}" (request ${req.protocol}:  ${req.hostname}${req.originalUrl})`);
             return;
         }
 

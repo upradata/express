@@ -3,22 +3,22 @@ import { disableTTYStylesIfNotSupported, red, yellow } from '@upradata/node-util
 
 disableTTYStylesIfNotSupported();
 
-export function logError(err: Error, req: Request, res: Response, next: NextFunction) {
+export const logError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(yellow`❌ Error ${err.name}: "${err.message}"`);
     console.error(red`ᐅ stack: ${err.stack}`);
 
     next(err);
-}
+};
 
-export function clientErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export const clientErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (req.xhr) {
         res.status(500).send({ error: 'Something failed!' });
     } else {
         next(err);
     }
-}
+};
 
-export function catchAllErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export const catchAllErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     /*
     https://expressjs.com/en/guide/error-handling.html
 
@@ -34,7 +34,8 @@ export function catchAllErrorHandler(err: Error, req: Request, res: Response, ne
     res.sendStatus(500);
     // res.status(500);
     // res.render('error', { error: err });
-}
+};
+
 
 
 export const errorHandler = [ logError, clientErrorHandler, catchAllErrorHandler ];
