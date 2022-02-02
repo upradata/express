@@ -87,7 +87,6 @@ export class ExpressServer {
         if (enableLogRequest)
             app.use(logRequest);
 
-        console.log({ allowedDomains });
         if (allowedDomains.length > 0)
             app.use(makeFirewallMiddleware(allowedDomains));
 
