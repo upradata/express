@@ -1,70 +1,72 @@
 {
-	"name": "@upradata/express",
-	"author": {
-		"name": "Thomas Milotti",
-		"email": "thomas.milotti@gmail.com",
-		"url": "https://github.com/milottit"
-	},
-	"repository": {
-		"url": "milottit@vs-ssh.visualstudio.com:v3/milottit/Util%20Typescript/Util%20Typescript"
-	},
-	"license": "MIT",
-	"version": "4.0.2",
-	"description": "Set of typescript util tools",
-	"sideEffects": false,
-	"main": "lib",
-	"types": "lib-esm",
-	"module": "lib-esm",
-	"files": [
-		"lib",
-		"lib-esm"
-	],
-	"scripts": {
-		"clean": "shx rm -rf lib lib-esm",
-		"pre-build": "pnpm run clean",
-		"build": "concurrently 'tsc -p tsconfig.lib.json' 'tsc -p tsconfig.lib-esm.json'",
-		"post-build": "pnpm run test && npm run e2e",
-		"watch": "pnpm run build:watch",
-		"build:watch": "concurrently 'tsc -p tsconfig.lib.json -w' 'tsc -p tsconfig.lib-esm.json -w'",
-		"test": "pnpm jest --passWithNoTests --verbose false --config jest-ut.config.js",
-		"e2e": "pnpm jest --passWithNoTests --verbose false --config jest-e2e.config.js",
-		"github-push": "pnpm run build && npm version patch && git pushall && git pushall-tags",
-		"npm-publish": "pnpm run build && npm publish --access public"
-	},
-	"dependencies": {
-		"@google-cloud/debug-agent": "^5.2.8",
-		"@sendgrid/client": "^7.6.0",
-		"@sendgrid/mail": "^7.6.0",
-		"body-parser": "^1.19.1",
-		"cors": "^2.8.5",
-		"express": "^4.17.2",
-		"express-async-errors": "^3.1.1",
-		"form-data": "^4.0.0",
-		"mailgun.js": "^4.1.4",
-		"serve-static": "^1.14.2",
-		"@upradata/util": "^15.0.0",
-		"@upradata/node-util": "^16.0.0"
-	},
-	"devDependencies": {
-		"@types/body-parser": "^1.19.2",
-		"@types/cors": "^2.8.12",
-		"@types/express": "^4.17.13",
-		"@types/express-serve-static-core": "^4.17.28",
-		"@types/node": "^17.0.10",
-		"@types/qs": "^6.9.7",
-		"@types/serve-static": "^1.13.10",
-		"concurrently": "^7.0.0",
-		"tsconfig-paths": "^3.12.0"
-	},
-	"local": {
-		"dependencies": {
-			"@upradata/util": "link:/home/milottit/Libraries/Upra-Data/util@15.0.0",
-			"@upradata/node-util": "link:/home/milottit/Libraries/Upra-Data/node-util@16.0.0"
-		},
-		"usedBy": {
-			"@upradata/tilda-tools": "/home/milottit/Libraries/Tilda/tools",
-			"@upradata/website": "/home/milottit/Projects/upradata-website",
-			"google-app-engine": "/home/milottit/Projects/upradata-website/google-app-engine"
-		}
-	}
+    "name": "@upradata/express",
+    "author": {
+        "name": "Thomas Milotti",
+        "email": "thomas.milotti@gmail.com",
+        "url": "https://github.com/milottit"
+    },
+    "repository": {
+        "url": "milottit@vs-ssh.visualstudio.com:v3/milottit/Util%20Typescript/Util%20Typescript"
+    },
+    "license": "MIT",
+    "version": "4.0.3",
+    "description": "Set of typescript util tools",
+    "sideEffects": false,
+    "main": "lib",
+    "types": "lib-esm",
+    "module": "lib-esm",
+    "files": [
+        "lib",
+        "lib-esm"
+    ],
+    "scripts": {
+        "clean": "shx rm -rf lib lib-esm",
+        "pre-build": "pnpm run clean",
+        "build": "concurrently 'tsc -p tsconfig.lib.json' 'tsc -p tsconfig.lib-esm.json'",
+        "post-build": "pnpm run test && npm run e2e",
+        "watch": "pnpm run build:watch",
+        "build:watch": "concurrently 'tsc -p tsconfig.lib.json -w' 'tsc -p tsconfig.lib-esm.json -w'",
+        "test": "pnpm jest --passWithNoTests --verbose false --config jest-ut.config.js",
+        "e2e": "pnpm jest --passWithNoTests --verbose false --config jest-e2e.config.js",
+        "github-push": "pnpm run build && npm version patch && git pushall && git pushall-tags",
+        "npm-publish": "pnpm run build && npm publish --access public"
+    },
+    "dependencies": {
+        "@google-cloud/debug-agent": "^5.2.8",
+        "@sendgrid/client": "^7.6.0",
+        "@sendgrid/mail": "^7.6.0",
+        "body-parser": "^1.19.1",
+        "cors": "^2.8.5",
+        "express": "^4.17.2",
+        "express-async-errors": "^3.1.1",
+        "form-data": "^4.0.0",
+        "mailgun.js": "^4.1.4",
+        "serve-static": "^1.14.2",
+        "@upradata/util": "^16.0.0",
+        "@upradata/node-util": "^16.0.8"
+    },
+    "devDependencies": {
+        "@types/body-parser": "^1.19.2",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
+        "@types/express-serve-static-core": "^4.17.28",
+        "@types/node": "^17.0.10",
+        "@types/qs": "^6.9.7",
+        "@types/serve-static": "^1.13.10",
+        "concurrently": "^7.0.0",
+        "tsconfig-paths": "^3.12.0"
+    },
+    "local": {
+        "dependencies": {
+            "@upradata/util": "link:/home/milottit/Libraries/Upra-Data/util@16.0.0",
+            "@upradata/node-util": "link:/home/milottit/Libraries/Upra-Data/node-util@16.0.8"
+        },
+        "usedBy": {
+            "@upradata/tilda-tools": "/home/milottit/Libraries/Tilda/tools",
+            "@upradata/website": "/home/milottit/Projects/upradata-website",
+            "google-app-engine": "/home/milottit/Projects/upradata-website/google-app-engine",
+            "@upradata/academie-nice": "/home/milottit/Projects/academie-nice"
+        }
+    },
+    "peersDependencies": {}
 }
