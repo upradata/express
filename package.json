@@ -62,7 +62,8 @@
         "usedBy": {
             "@upradata/tilda-tools": "/home/milottit/Libraries/Tilda/tools",
             "@upradata/website": "/home/milottit/Projects/upradata-website",
-            "google-app-engine": "/home/milottit/Projects/upradata-website/google-app-engine"
+            "google-app-engine": "/home/milottit/Projects/upradata-website/google-app-engine",
+            "@upradata/academie-nice": "/home/milottit/Projects/academie-nice"
         }
     }
 }

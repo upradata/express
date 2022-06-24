@@ -28,7 +28,7 @@ export const createSendMail = (options: SendMailOptions): SendMail => {
         const o = emailOptions;
         const mailDescription = `From: ${o.from} / To: ${o.to} with Subject: ${o.subject}`;
 
-        return send(o).then(body => {
+        return send(o).then(_body => {
             console.warn(`Mail sent => ${mailDescription}`);
         }).catch(err => {
             console.warn(`Mail not sent: ${mailDescription}`);

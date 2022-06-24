@@ -11,7 +11,7 @@ export const sendgrid = (options: SendgridOptions) => {
 
     const send = async (options: EmailOptions): Promise<string> => {
         const res = await sendgridJs.send(options as sendgridJs.MailDataRequired);
-        const { body, headers, statusCode } = res[ 0 ];
+        const { body, /* headers, */ statusCode } = res[ 0 ];
         return `{ statusCode: ${statusCode}, body: ${body} }`;
     };
 
